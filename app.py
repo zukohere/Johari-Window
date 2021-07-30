@@ -31,9 +31,10 @@ def home():
         print("done")
     return render_template("index.html")
 
-# @app.route('/get_cloud_data/')
-# def get_cloud_data():
-#     # render a json file from the mongodb data. using a function defined elsewhere.
-#     return(jsonify(render_cloud_object))
+@app.route('/get_cloud_data/')
+def get_cloud_data():
+#     render a json file from the mongodb data. using a function defined elsewhere.
+    return(jsonify(render_cloud_object()))
+
 if __name__ == "__main__":
     app.run(debug=True)

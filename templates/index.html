@@ -34,14 +34,15 @@
           appears and the article's sentiment.
           Words are colorized based on usage positivity (green) or negativity (red).</h2>-->
     <center>
+      <button onclick="renderCloud()">Display Johari Window</button>
       <button onclick="addData()">Submit Data</button>
       <br>
       <div id="formCreate"></div>
-      <select id="selDataset" onchange="dataChanged(this.value)">
+      <!-- <select id="selDataset" onchange="dataChanged(this.value)">
         <option value="">**Choose an Option**</option>
         <option value="">Render Johari Window</option>
         <option value="">Submit Data as Subject</option>
-        <option value="">Submit Data as Observer</option>
+        <option value="">Submit Data as Observer</option> -->
         <!-- {% for val in list %} -->
         <!-- <option value={{ val.symbol }}>{{ val.name }}</option> -->
         <!-- {% endfor %} -->
@@ -54,11 +55,13 @@
         <!-- <div class="container"> -->
         <section class="row">
           <div class="col-md-6">
+            Arena (observed by self and by others)
             <div class="wrap">
               <div id="Arena"></div>
             </div>
           </div>
           <div class="col-md-6">
+            Blind Spot (observed only by others, not by self)
             <div class="wrap">
               <div id="BlindSpot"></div>
             </div>
@@ -69,11 +72,13 @@
             <div class="wrap">
               <div id="Facade"></div>
             </div>
+            Facade (observed by self, not observed by others)
           </div>
           <div class="col-md-6">
             <div class="wrap">
               <div id="Unknown"></div>
             </div>
+            Unknown (not observed by self or others)
           </div>
         </section>
       </div>
