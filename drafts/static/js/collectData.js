@@ -81,7 +81,7 @@ function addData() {
     //Allow selection of who it's for. ((Need Dropdown of users from mongo unless new person))
 
     //Allow role selection.
-    roleOptions = ["Subject", "Observer"]
+    roleOptions = ["Observer","Subject"]
     var roleSelect = document.createElement('select');
     roleSelect.id = "id_role"
     roleSelect.name = "JohariAdj"

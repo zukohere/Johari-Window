@@ -72,10 +72,10 @@ var wordSize = d3.scaleSqrt()
     // // This function takes the output of 'layout' above and draw the words
     // // Wordcloud features that are THE SAME from one word to the other can be here
     function draw(words) {
-      console.log(words)
+      //console.log(words)
       svg
         .append("g")
-        .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+        //.attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
         .selectAll("text")
         .data(words)
         .enter().append("text")
@@ -87,25 +87,59 @@ var wordSize = d3.scaleSqrt()
         .attr("text-anchor", "start")
         .attr("dominant-baseline", "hanging") // to get rectangles and text to rotate same
         .style("font-family", "Impact")
-        .attr("transform", function (d) {
-          return "translate(" + [d.x, d.y]
-            + ")rotate(" + d.rotate + ")";
-        })
+        // .attr("x0",0)
+        // .attr("y0",function (d) {10*words.indexOf(d)})
+        
+        //.attr("x0",0)
+        //.attr("y0",120)
+        // .attr("y0", function (d) {if (words.indexOf(d)===0) 
+        // {return 0} 
+        // else {return words[words.indexOf(d)-1].y0-words[words.indexOf(d)-1].size}})
+       
+       
+        //.attr("transform", function (d) {
+        //  return "translate(" + [d.x, d.y]
+        //    + ")rotate(" + d.rotate + ")";
+        //})
         .text(function (d) { return d.text; })
-      console.log(words)
+        .attr("transform", function (d) {if (words.indexOf(d)===0) 
+          {return "translate(" +[0,0]+ ")rotate(" + d.rotate + ")"}
+          // else {return "translate(" +[0,120]+ ")rotate(" + d.rotate + ")"}})
+          else {return "translate(" +[0,-words[words.indexOf(d)-1].y+words[words.indexOf(d)-1].size]+ ")rotate(" + d.rotate + ")"}})
+        
       svg
         .append("g")
-        .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+        //.attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
         .selectAll("dot")
         .data(words)
         .enter().append("rect")
         .attr("width", function (d) { return 0.8 * getTextWidth(d.text, d.size + "pt Impact") })
         .attr("height", function (d) { return d.size })
         .style("opacity", 0)
-        .attr("transform", function (d) {
-          return "translate(" + [d.x, d.y]
-            + ")rotate(" + d.rotate + ")";
-        })
+        .attr("transform", function (d) {if (words.indexOf(d)===0) 
+          {return "translate(" +[0,0]+ ")rotate(" + d.rotate + ")"}
+        // else {console.log([words.indexOf(d) ,words[words.indexOf(d)-1].y0-words[words.indexOf(d)-1].size]); return "translate(" +[0,120]+ ")rotate(" + d.rotate + ")"}})
+          else {console.log([words[words.indexOf(d)-1].y, words[words.indexOf(d)-1].size]); return "translate(" +[0,-words[words.indexOf(d)-1].y+words[words.indexOf(d)-1].size]+ ")rotate(" + d.rotate + ")"}})
+        
+        //.attr("x0",0)
+        //.attr("y0",120)
+        // .attr("y0", function (d) {if (words.indexOf(d)===0) 
+        // {return 0} 
+        // else {console.log(words[words.indexOf(d)-1].y0); return words[words.indexOf(d)-1].y0-words[words.indexOf(d)-1].size}})
+        
+        
+        // .attr("x0",0)
+        // .attr("y0",function (d) {10*words.indexOf(d)})
+        //.attr("transform", function (d) {
+          // return "translate(" + [0, 10* words.indexOf(d)]
+            // + ")rotate(" + d.rotate + ")";
+          // })
+
+        
+        // .attr("transform", function (d) {
+        //   return "translate(" + [d.x, d.y]
+        //     + ")rotate(" + d.rotate + ")";
+        // })
         .on("click", function (d) {
           d3.select("#DataArea0").html(
             `Word: <strong>${d.text}</strong> <br>
@@ -125,6 +159,7 @@ var wordSize = d3.scaleSqrt()
       // d3.select("#wordcloud_sentiment").html("")
       // d3.select("#wordcloud_sentiment").html(
       //   `Overall Article Positivity: <strong>${(data[0].Pos_Neg * 100).toFixed(0)}%</strong>`)
+    console.log(words)
     }
 
   }
@@ -145,15 +180,15 @@ function renderCloud() {
     
     console.log("Data Promise: ", dataPromise);
     console.log(data)
-    // Sort and use only the top 50 words
+    // Sort 
     var arenaData = data.Arena.sort((a, b) => b.Counts - a.Counts)
     var facadeData = data.Facade.sort((a, b) => b.Counts - a.Counts)
     var blindspotData = data.BlindSpot.sort((a, b) => b.Counts - a.Counts)
     var unknownData = data.Unknown.sort((a, b) => b.Counts - a.Counts)
     // create a linear scale to limit font size choices for the word cloud
     wordCloud("#Arena",arenaData,"green")
-    wordCloud("#BlindSpot",facadeData,"yellow")
-    wordCloud("#Facade",blindspotData,"orange")
+    wordCloud("#BlindSpot",blindspotData,"yellow")
+    wordCloud("#Facade",facadeData,"orange")
     wordCloud("#Unknown",unknownData,"red")
   })
 }

@@ -7,7 +7,7 @@ from cloudObject import render_cloud_object
 app = Flask(__name__, static_url_path='/static')
 
 # Use flask_pymongo to set up mongo connection
-app.config["MONGO_URI"] = f'mongodb+srv://{mongodict["username"]}:{mongodict["password"]}@cluster0.psrom.mongodb.net/Johari?retryWrites=true&w=majority'
+app.config["MONGO_URI"] = f'mongodb+srv://{mongodict["username"]}:{mongodict["password"]}@cluster0.psrom.mongodb.net/Johari?ssl=true&ssl_cert_reqs=CERT_NONE'
 mongo_client = PyMongo(app)
 db = mongo_client.db
 
