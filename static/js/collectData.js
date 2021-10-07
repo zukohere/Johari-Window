@@ -192,3 +192,4 @@ function addData() {
     myDiv.appendChild(x)
         ;
 }
+addData()
