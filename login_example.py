@@ -36,7 +36,11 @@ def register():
 
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['username'], 'password' : hashpass})
+            datalist=request.form.getlist("JohariMongo")
+            users.insert({'name' : request.form['username'], 
+            'password' : hashpass, 
+            'share_key': request.form['sharekey'], 
+            'user_adj': datalist})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         
