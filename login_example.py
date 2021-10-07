@@ -5,7 +5,7 @@ import bcrypt
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'Johari'
-app.config["MONGO_URI"] = f'mongodb+srv://matthewbrown84:QArutgers8.675@cluster0.psrom.mongodb.net/Johari?ssl=true&ssl_cert_reqs=CERT_NONE'
+app.config["MONGO_URI"] = f'mongodb+srv://user:GjOlEBYy62570D2d@cluster0.psrom.mongodb.net/Johari?ssl=true&ssl_cert_reqs=CERT_NONE'
 
 mongo_client = PyMongo(app)
 db = mongo_client.db
