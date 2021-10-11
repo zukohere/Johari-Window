@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form method=POST action="{{ url_for('submit') }}">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Enter Subject's Username (They Must Provide this to You)</label>
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputkey1">Enter Subject's Key (They Must Provide this to You)</label>
+                    <input type="text" class="form-control" name="sharekey" placeholder="Key">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputname1">Enter your first and last name (or "anonymous").</label>
+                    <input type="text" class="form-control" name="guestname" placeholder="Name">
+                </div>
+        </div>
+    </div>
+
+
+
+    <br>
+    <div class="row">
+        <h3>
+            <center>Check all adjectives that you feel describe the user.</center>
+        </h3>
+    </div>
+    <div class="row">
+        <!-- <form method=POST action="{{ url_for('register') }}"> -->
+            <div class="form group col-md-3">
+
+                {% set JohariAdjectives0 = ["Able",
+                "Accepting",
+                "Adaptable",
+                "Bold",
+                "Brave",
+                "Calm",
+                "Caring",
+                "Cheerful",
+                "Clever",
+                "Complex",
+                "Confident",
+                "Dependable",
+                "Dignified",
+                "Empathetic"
+                ] %}
+                {% for JohariAdjective in JohariAdjectives0 %}
+                <input type="checkbox" id={{JohariAdjective}} name=JohariMongo value={{JohariAdjective}}>
+                <label for={{JohariAdjective}}> {{JohariAdjective}}</label><br>
+                {% endfor %}
+            </div>
+
+            <div class="form group col-md-3">
+
+                {% set JohariAdjectives1 = ["Energetic",
+                "Extroverted",
+                "Friendly",
+                "Giving",
+                "Happy",
+                "Helpful",
+                "Idealistic",
+                "Independent",
+                "Ingenious",
+                "Intelligent",
+                "Introverted",
+                "Kind",
+                "Knowledgeable",
+                "Logical"
+                ] %}
+                {% for JohariAdjective in JohariAdjectives1 %}
+                <input type="checkbox" id={{JohariAdjective}} name=JohariMongo value={{JohariAdjective}}>
+                <label for={{JohariAdjective}}> {{JohariAdjective}}</label><br>
+                {% endfor %}
+            </div>
+
+            <div class="form group col-md-3">
+
+                {% set JohariAdjectives2 = [
+                "Loving",
+                "Mature",
+                "Modest",
+                "Nervous",
+                "Observant",
+                "Organized",
+                "Patient",
+                "Powerful",
+                "Proud",
+                "Quiet",
+                "Reflective",
+                "Relaxed",
+                "Religious",
+                "Responsive",
+                ] %}
+                {% for JohariAdjective in JohariAdjectives2 %}
+                <input type="checkbox" id={{JohariAdjective}} name=JohariMongo value={{JohariAdjective}}>
+                <label for={{JohariAdjective}}> {{JohariAdjective}}</label><br>
+                {% endfor %}
+            </div>
+            <div class="form group col-md-3">
+
+                {% set JohariAdjectives3 = [
+                "Searching",
+                "Self-assertive",
+                "Self-conscious",
+                "Sensible",
+                "Sentimental",
+                "Shy",
+                "Silly",
+                "Spontaneous",
+                "Sympathetic",
+                "Tense",
+                "Trustworthy",
+                "Warm",
+                "Wise",
+                "Witty"] %}
+                {% for JohariAdjective in JohariAdjectives3 %}
+                <input type="checkbox" id={{JohariAdjective}} name=JohariMongo value={{JohariAdjective}}>
+                <label for={{JohariAdjective}}> {{JohariAdjective}}</label><br>
+                {% endfor %}
+            </div>
+        <!-- </form> -->
+    </div>
+
+
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <button type="submit" class="btn btn-primary btn-block">Submit Data</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

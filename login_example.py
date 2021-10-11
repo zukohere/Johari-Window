@@ -12,8 +12,8 @@ db = mongo_client.db
 @app.route('/')
 def index():
     if 'username' in session:
-        return 'You are logged in as ' + session['username']
-
+        # return 'You are logged in as ' + session['username']
+        return render_template('draft_index.html')
     return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
@@ -40,14 +40,28 @@ def register():
             users.insert({'name' : request.form['username'], 
             'password' : hashpass, 
             'share_key': request.form['sharekey'], 
-            'user_adj': datalist})
+            'user_adj': datalist,
+            'guests': {}})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         
         return 'That username already exists!'
 
     return render_template('register.html')
-
+@app.route('/guestform', methods=['POST', 'GET'])
+def submit():
+    if request.method == 'POST':
+        users = db.users
+        subject_user = users.find_one({'name' : request.form['username'], 'share_key' : request.form['sharekey']})
+        datalist=request.form.getlist("JohariMongo")
+        guest_name = request.form['guestname']
+        if subject_user is None:
+            return 'Invalid username/key combination.'
+        else:
+            users.find_one_and_update({'name' : request.form['username'], 'share_key' : request.form['sharekey']}, 
+                                 {"$set": {"guests": {"name": guest_name, "guest_adj": datalist}}})
+            return "Data submitted! Thank you."
+    return render_template('guestform.html')
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
     app.run(debug=True)
