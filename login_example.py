@@ -67,8 +67,7 @@ def submit():
     return render_template('guestform.html')
 
 @app.route('/get_johari_data/')
-@app.route('/get_johari_data/<username>')
-def johari(username=None):
+def johari():
     username = session['username']
     users = db.users
     subject_user = users.find_one({'name' : session['username']})
