@@ -1,6 +1,8 @@
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, jsonify
 from flask_pymongo import PyMongo
 import bcrypt
+from collections import Counter
+from johari_dict import johari_dict
 
 app = Flask(__name__)
 
@@ -58,10 +60,26 @@ def submit():
         if subject_user is None:
             return 'Invalid username/key combination.'
         else:
+            subject_user["guests"]
             users.find_one_and_update({'name' : request.form['username'], 'share_key' : request.form['sharekey']}, 
-                                 {"$set": {"guests": {"name": guest_name, "guest_adj": datalist}}})
+                                 {"$set": {"guests": [subject_user["guests"],{"name": guest_name, "guest_adj": datalist}]}})
             return "Data submitted! Thank you."
     return render_template('guestform.html')
+
+@app.route('/get_johari_data/')
+@app.route('/get_johari_data/<username>')
+def johari(username=None):
+    username = session['username']
+    users = db.users
+    subject_user = users.find_one({'name' : session['username']})
+    johariadj_consol = [ ]
+    for i in range(len(subject_user["guests"])):
+        for adj in subject_user["guests"][i]["guest_adj"]:
+            johariadj_consol.append(adj)
+    return jsonify(Counter(johariadj_consol))
+
+
+
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
     app.run(debug=True)

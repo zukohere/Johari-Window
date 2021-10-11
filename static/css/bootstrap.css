@@ -4,6 +4,19 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+.windowdressing {
+  position: static;
+  width: 285px;
+  height: 300px;
+  margin-top: 0px;
+  overflow: hidden;
+  border-radius: 0px;
+  border: 3px solid black;
+  box-sizing: border-box;
+}
+
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
