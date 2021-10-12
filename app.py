@@ -21,7 +21,7 @@ def index():
             Share your uasername/key and have others fill out the form about you to get data.
             Username: {session['username']}
             Key: {subject_user['share_key']}"""
-        return render_template('draft_index.html')
+        return render_template('joharidsplay.html')
     return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
@@ -85,9 +85,11 @@ def johari():
     you_see = subject_user['user_adj']
 
     Arena = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj in they_see]
-    Facade = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj not in they_see]
+    Facade = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in you_see if adj not in they_see]
     Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in they_see if adj not in you_see]
-    Unknown = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in full_list if adj not in you_see if adj not in they_see]
+    Unknown = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in full_list if adj not in you_see if adj not in they_see]
+    # Facade and unknown have different counts for every one that didn't see it.
+
 
     visdata = {"Username": username, 
                 "num_obs": len(subject_user["guests"]),

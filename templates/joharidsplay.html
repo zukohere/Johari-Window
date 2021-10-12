@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Johari Window</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
+</head>
+
+<header>
+  <section class="row">
+    <div class="col-md-4">Author: Matthew Brown</div>
+    <div class="col-md-4"><a href="https://github.com/zukohere/Johari-Window/">github repo</a></div>
+    <div class="col-md-4"> <a href="https://github.com/zukohere/Johari-Window/blob/main/README.md">README and
+        references</a></div>
+</header>
+</section>
+
+<body>
+
+  
+
+
+  <!-- Create the overall grid -->
+  <div class="container" style="background-color: rgb(236, 247, 236);">
+
+    <section class="row">
+      <div class="col-md-6" style = "border-style: solid; background-color: rgb(183, 198, 228)">
+        <center><h4>Arena (observed by self and by others)</h4></center>
+        <div id="Arena"></div>
+      </div>
+      
+      <div class="col-md-6" style = "border-style: solid; background-color: rgb(241, 204, 177)">
+        <center><h4>Blind Spot (observed only by others, not by self)</h4></center>
+        <div id="Blindspot"></div>
+      </div>
+    </section>
+
+    
+    
+    <section class="row">
+      <div class="col-md-6" style = "border-style: solid; background-color: rgb(251, 230, 162)">
+        <center><h4>Facade (observed by self, not observed by others)</h2></center>
+        <div id="Facade"></div>
+      </div>
+      <div class="border-right"></div>
+      <div class="col-md-6" style = "border-style: solid; background-color: rgb(195, 195, 195)">
+        <center><h4>Unknown (not observed by self or others)</h4></center>
+        <div id="Unknown"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="https://d3js.org/d3.v5.js"></script>
+
+
+
+  
+</body>
+
+</html>
+{% endblock %}

@@ -1,10 +1,10 @@
 // based on template at https://www.d3-graph-gallery.com/graph/lollipop_ordered.html
 
-function JohariQuad(tag, quadrant, themeColor,num_obs) {
+function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj) {
 
     // set the dimensions and margins of the graph
     var margin = { top: 10, right: 30, bottom: 40, left: 100 },
-        width = 460 - margin.left - margin.right,
+        width = 400 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
@@ -14,8 +14,17 @@ function JohariQuad(tag, quadrant, themeColor,num_obs) {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
-
+            "translate(" + margin.left + "," + margin.top + ")")
+        // .attr("border",1);
+        
+        // var borderPath = svg.append("rect")
+        // .attr("x", 0)
+        // .attr("y", 0)
+        // .attr("height", 500)
+        // .attr("width", 400)
+        // .style("stroke", "black")
+        // .style("fill", "none")
+        // .style("stroke-width", 1);
     // Parse the Data
     // d3.json('/get_johari_data/').then(function (data) {
     //     const dataPromise = d3.json('/get_johari_data/');
@@ -23,15 +32,29 @@ function JohariQuad(tag, quadrant, themeColor,num_obs) {
 
     //     // console.log(data)
 
+
+    // scale adjective font size labels
+        var labelSize = d3.scaleLinear()
+        .domain([56,0])
+        .range([8,16]);
+
     //     // Add X axis
         var x = d3.scaleLinear()
             .domain([0, num_obs])
             .range([0, width]);
+            
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x))
+            .call(d3.axisBottom(x).tickFormat(function(e){
+                if(Math.floor(e) != e)
+                {
+                    return;
+                }
+        
+                return e;
+            }))
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
+            // .attr("transform", "translate(-10,0)rotate(-45)")
             .style("text-anchor", "end");
 
         // Y axis
@@ -41,6 +64,7 @@ function JohariQuad(tag, quadrant, themeColor,num_obs) {
             .padding(1);
         svg.append("g")
             .call(d3.axisLeft(y))
+            .style("font", labelSize(num_adj)+"px times")
 
         // Lines
         svg.selectAll("myline")
@@ -61,7 +85,7 @@ function JohariQuad(tag, quadrant, themeColor,num_obs) {
             .attr("cx", function (d) { return x(d.obsCount); })
             .attr("cy", function (d) { return y(d.adj); })
             .attr("r", "7")
-            .style("fill", "#69b3a2")
+            .style("fill", themeColor)
             .attr("stroke", "black")
     
         }
@@ -84,10 +108,10 @@ function renderQuad() {
       var unknownData = data.Unknown.sort((a, b) => b.obsCount - a.obsCount)
       var num_obs = data.num_obs
       // create a linear scale to limit font size choices for the word cloud
-      JohariQuad("#Arena",arenaData,"green",num_obs)
-      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs)
-      JohariQuad("#Facade",facadeData,"orange",num_obs)
-      JohariQuad("#Unknown",unknownData,"red",num_obs)
+      JohariQuad("#Arena",arenaData,"green",num_obs, arenaData.length)
+      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs, blindspotData.length)
+      JohariQuad("#Facade",facadeData,"orange",num_obs, facadeData.length)
+      JohariQuad("#Unknown",unknownData,"red",num_obs, unknownData.length)
     })
   }
 
