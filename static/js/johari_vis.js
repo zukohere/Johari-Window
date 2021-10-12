@@ -1,6 +1,6 @@
 // based on template at https://www.d3-graph-gallery.com/graph/lollipop_ordered.html
 
-function JohariQuad(tag, quadrant, themeColor) {
+function JohariQuad(tag, quadrant, themeColor,num_obs) {
 
     // set the dimensions and margins of the graph
     var margin = { top: 10, right: 30, bottom: 40, left: 100 },
@@ -17,16 +17,15 @@ function JohariQuad(tag, quadrant, themeColor) {
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Parse the Data
-    d3.json(, function (data) {
+    // d3.json('/get_johari_data/').then(function (data) {
+    //     const dataPromise = d3.json('/get_johari_data/');
+    //     console.log("Data Promise: ", dataPromise);
 
-        // sort data
-        data.sort(function (b, a) {
-            return a.Value - b.Value;
-        });
+    //     // console.log(data)
 
-        // Add X axis
+    //     // Add X axis
         var x = d3.scaleLinear()
-            .domain([0, 13000])
+            .domain([0, num_obs])
             .range([0, width]);
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -38,34 +37,36 @@ function JohariQuad(tag, quadrant, themeColor) {
         // Y axis
         var y = d3.scaleBand()
             .range([0, height])
-            .domain(data.map(function (d) { return d.Country; }))
+            .domain(quadrant.map(function (d) { return d.adj; }))
             .padding(1);
         svg.append("g")
             .call(d3.axisLeft(y))
 
         // Lines
         svg.selectAll("myline")
-            .data(data)
+            .data(quadrant)
             .enter()
             .append("line")
-            .attr("x1", function (d) { return x(d.Value); })
+            .attr("x1", function (d) { return x(d.obsCount); })
             .attr("x2", x(0))
-            .attr("y1", function (d) { return y(d.Country); })
-            .attr("y2", function (d) { return y(d.Country); })
+            .attr("y1", function (d) { return y(d.adj); })
+            .attr("y2", function (d) { return y(d.adj); })
             .attr("stroke", "grey")
 
         // Circles
         svg.selectAll("mycircle")
-            .data(data)
+            .data(quadrant)
             .enter()
             .append("circle")
-            .attr("cx", function (d) { return x(d.Value); })
-            .attr("cy", function (d) { return y(d.Country); })
+            .attr("cx", function (d) { return x(d.obsCount); })
+            .attr("cy", function (d) { return y(d.adj); })
             .attr("r", "7")
             .style("fill", "#69b3a2")
             .attr("stroke", "black")
-    })
-}
+    
+        }
+        // )
+// }
 
 function renderQuad() {
        d3.json('/get_johari_data/').then(function (data) {
@@ -74,16 +75,20 @@ function renderQuad() {
       const dataPromise = d3.json('/get_johari_data/');
       
       console.log("Data Promise: ", dataPromise);
-      console.log(data)
+    //   console.log(data)
       // Sort 
-      var arenaData = data.Arena.sort((a, b) => b.Counts - a.Counts)
-      var facadeData = data.Facade.sort((a, b) => b.Counts - a.Counts)
-      var blindspotData = data.BlindSpot.sort((a, b) => b.Counts - a.Counts)
-      var unknownData = data.Unknown.sort((a, b) => b.Counts - a.Counts)
+      var arenaData = data.Arena.sort((a, b) => b.obsCount - a.obsCount)
+      console.log(data.Blindspot)
+      var blindspotData = data.Blindspot.sort((a, b) => b.obsCount - a.obsCount)
+      var facadeData = data.Facade.sort((a, b) => b.obsCount - a.obsCount)
+      var unknownData = data.Unknown.sort((a, b) => b.obsCount - a.obsCount)
+      var num_obs = data.num_obs
       // create a linear scale to limit font size choices for the word cloud
-      JohariQuad("#Arena",arenaData,"green")
-      JohariQuad("#BlindSpot",blindspotData,"yellow")
-      JohariQuad("#Facade",facadeData,"orange")
-      JohariQuad("#Unknown",unknownData,"red")
+      JohariQuad("#Arena",arenaData,"green",num_obs)
+      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs)
+      JohariQuad("#Facade",facadeData,"orange",num_obs)
+      JohariQuad("#Unknown",unknownData,"red",num_obs)
     })
   }
+
+  renderQuad()

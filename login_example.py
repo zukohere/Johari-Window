@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, request, session, redirect, j
 from flask_pymongo import PyMongo
 import bcrypt
 from collections import Counter
-from johari_dict import johari_dict
+from Johari_full_list import full_list
 
 app = Flask(__name__)
 
@@ -14,7 +14,13 @@ db = mongo_client.db
 @app.route('/')
 def index():
     if 'username' in session:
-        # return 'You are logged in as ' + session['username']
+        users = db.users
+        subject_user = users.find_one({'name' : session['username']})
+        if subject_user['guests'] == []:
+            return f"""You are logged in as but there is nothing to visualize! 
+            Share your uasername/key and have others fill out the form about you to get data.
+            Username: {session['username']}
+            Key: {subject_user['share_key']}"""
         return render_template('draft_index.html')
     return render_template('index.html')
 
@@ -71,13 +77,25 @@ def johari():
     username = session['username']
     users = db.users
     subject_user = users.find_one({'name' : session['username']})
-    johariadj_consol = [ ]
+    they_see = [ ]
     for i in range(len(subject_user["guests"])):
         for adj in subject_user["guests"][i]["guest_adj"]:
-            johariadj_consol.append(adj)
-    return jsonify(Counter(johariadj_consol))
+            they_see.append(adj)
+    
+    you_see = subject_user['user_adj']
 
+    Arena = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj in they_see]
+    Facade = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj not in they_see]
+    Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in they_see if adj not in you_see]
+    Unknown = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in full_list if adj not in you_see if adj not in they_see]
 
+    visdata = {"Username": username, 
+                "num_obs": len(subject_user["guests"]),
+                "Arena": Arena, 
+                "Facade": Facade, 
+                "Blindspot": Blindspot,
+                "Unknown": Unknown}
+    return jsonify(visdata)
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
