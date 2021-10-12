@@ -14,26 +14,26 @@ db = mongo_client.db
 @app.route('/')
 def index():
     if 'username' in session:
-        users = db.users
-        subject_user = users.find_one({'name' : session['username']})
-        if subject_user['guests'] == []:
-            return f"""You are logged in as but there is nothing to visualize! 
-            Share your uasername/key and have others fill out the form about you to get data.
-            Username: {session['username']}
-            Key: {subject_user['share_key']}"""
         return render_template('joharidsplay.html')
-    return render_template('index.html')
+    return render_template("index.html")
+    
 
 @app.route('/login', methods=['POST'])
 def login():
     users = db.users
     login_user = users.find_one({'name' : request.form['username']})
+    subject_user = users.find_one({'name' : session['username']})
 
     if login_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
-            session['username'] = request.form['username']
-            return redirect(url_for('index'))
-
+        if subject_user['guests']=={}:
+            return f"""You are logged in as but there is nothing to visualize! 
+            Share your uasername/key and have others fill out the form about you to get data.
+            Username: {session['username']}
+            Key: {subject_user['share_key']}"""
+            if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
+                session['username'] = request.form['username']
+                return render_template('joharidsplay.html')
+    
     return 'Invalid username/password combination'
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -49,7 +49,7 @@ def register():
             'password' : hashpass, 
             'share_key': request.form['sharekey'], 
             'user_adj': datalist,
-            'guests': {}})
+            'guests': []})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         
@@ -66,7 +66,6 @@ def submit():
         if subject_user is None:
             return 'Invalid username/key combination.'
         else:
-            subject_user["guests"]
             users.find_one_and_update({'name' : request.form['username'], 'share_key' : request.form['sharekey']}, 
                                  {"$set": {"guests": [subject_user["guests"],{"name": guest_name, "guest_adj": datalist}]}})
             return "Data submitted! Thank you."
