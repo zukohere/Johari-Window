@@ -5,7 +5,7 @@ from collections import Counter
 from Johari_full_list import full_list
 
 app = Flask(__name__)
-
+app.secret_key = 'mysecret'
 app.config['MONGO_DBNAME'] = 'Johari'
 app.config["MONGO_URI"] = f'mongodb+srv://user:GjOlEBYy62570D2d@cluster0.psrom.mongodb.net/Johari?ssl=true&ssl_cert_reqs=CERT_NONE'
 
@@ -106,5 +106,4 @@ def johari():
         return jsonify(visdata)
 
 if __name__ == '__main__':
-    app.secret_key = 'mysecret'
     app.run(debug=True)
