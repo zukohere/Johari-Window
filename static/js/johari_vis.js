@@ -8,7 +8,7 @@ function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj,winColor) {
         height = 500 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3.select(tag)
+    var svg = d3.select("#"+tag)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -88,10 +88,10 @@ function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj,winColor) {
             .style("fill", themeColor)
             .attr("stroke", "black")
     
-            d3.select(tag)
+            d3.select("#" + tag)
             .on('click', function(){
                 // Get the d3js SVG element and save using saveSvgAsPng.js
-                saveSvgAsPng(document.getElementsByTagName("svg")[0], "plot.png", {scale: 2, backgroundColor: winColor});}
+                saveSvgAsPng(document.getElementById(tag), "plot.png", {scale: 2, backgroundColor: winColor});}
         )
  }
 
@@ -111,10 +111,10 @@ function renderQuad() {
       var unknownData = data.Unknown.sort((a, b) => b.obsCount - a.obsCount)
       var num_obs = data.num_obs
       // create a linear scale to limit font size choices for the word cloud
-      JohariQuad("#Arena",arenaData,"green",num_obs, arenaData.length,"rgb(183, 198, 228)")
-      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs, blindspotData.length,"rgb(241, 204, 177)")
-      JohariQuad("#Facade",facadeData,"orange",num_obs, facadeData.length,"rgb(251, 230, 162)")
-      JohariQuad("#Unknown",unknownData,"red",num_obs, unknownData.length,"rgb(195, 195, 195)")
+      JohariQuad("Arena",arenaData,"green",num_obs, arenaData.length,"rgb(183, 198, 228)")
+      JohariQuad("Blindspot",blindspotData,"yellow",num_obs, blindspotData.length,"rgb(241, 204, 177)")
+      JohariQuad("Facade",facadeData,"orange",num_obs, facadeData.length,"rgb(251, 230, 162)")
+      JohariQuad("Unknown",unknownData,"red",num_obs, unknownData.length,"rgb(195, 195, 195)")
     })
   }
 
