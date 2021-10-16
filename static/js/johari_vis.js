@@ -1,6 +1,6 @@
 // based on template at https://www.d3-graph-gallery.com/graph/lollipop_ordered.html
 
-function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj) {
+function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj,winColor) {
 
     // set the dimensions and margins of the graph
     var margin = { top: 10, right: 30, bottom: 40, left: 100 },
@@ -88,9 +88,12 @@ function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj) {
             .style("fill", themeColor)
             .attr("stroke", "black")
     
-        }
-        // )
-// }
+            d3.select(tag)
+            .on('click', function(){
+                // Get the d3js SVG element and save using saveSvgAsPng.js
+                saveSvgAsPng(document.getElementsByTagName("svg")[0], "plot.png", {scale: 2, backgroundColor: winColor});}
+        )
+ }
 
 function renderQuad() {
        d3.json('/get_johari_data/').then(function (data) {
@@ -108,10 +111,10 @@ function renderQuad() {
       var unknownData = data.Unknown.sort((a, b) => b.obsCount - a.obsCount)
       var num_obs = data.num_obs
       // create a linear scale to limit font size choices for the word cloud
-      JohariQuad("#Arena",arenaData,"green",num_obs, arenaData.length)
-      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs, blindspotData.length)
-      JohariQuad("#Facade",facadeData,"orange",num_obs, facadeData.length)
-      JohariQuad("#Unknown",unknownData,"red",num_obs, unknownData.length)
+      JohariQuad("#Arena",arenaData,"green",num_obs, arenaData.length,"rgb(183, 198, 228)")
+      JohariQuad("#Blindspot",blindspotData,"yellow",num_obs, blindspotData.length,"rgb(241, 204, 177)")
+      JohariQuad("#Facade",facadeData,"orange",num_obs, facadeData.length,"rgb(251, 230, 162)")
+      JohariQuad("#Unknown",unknownData,"red",num_obs, unknownData.length,"rgb(195, 195, 195)")
     })
   }
 
