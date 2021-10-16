@@ -91,7 +91,8 @@ function JohariQuad(tag, quadrant, themeColor,num_obs,num_adj,winColor) {
             d3.select("#" + tag)
             .on('click', function(){
                 // Get the d3js SVG element and save using saveSvgAsPng.js
-                saveSvgAsPng(document.getElementById(tag), "plot.png", {scale: 2, backgroundColor: winColor});}
+                saveSvgAsPng(document.getElementById(tag).getElementsByTagName('svg'), 
+                "plot.png", {scale: 2, backgroundColor: winColor});}
         )
  }
 
