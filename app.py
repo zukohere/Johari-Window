@@ -51,8 +51,8 @@ def register():
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         
-        return '<h4 style="font-size:20px;">Heading</h4><h4><center>That username already exists!</h4></center>'
-
+        error= 'That username already exists!'
+        return render_template("message.html", message=error)
     return render_template('register.html')
 @app.route('/guestform', methods=['POST', 'GET'])
 def submit():
@@ -62,7 +62,8 @@ def submit():
         datalist=request.form.getlist("JohariMongo")
         guest_name = request.form['guestname']
         if subject_user is None:
-            return '<h4 style="font-size:20px;">Heading</h4><h4><center>Invalid username/key combination.</h4></center>'
+            error = 'Invalid username/key combination.'
+            return render_template("message.html", message=error)
         else:
             if 'guests' not in subject_user.keys():
                 users.find_one_and_update({'name' : request.form['username'], 'share_key' : request.form['sharekey']}, 
@@ -70,7 +71,8 @@ def submit():
             else:
                 users.find_one_and_update({'name' : request.form['username'], 'share_key' : request.form['sharekey']}, 
                                  {"$push": {"guests": {"name": guest_name, "guest_adj": datalist}}})
-            return '<h4 style="font-size:20px;">Heading</h4><h4><center>Data submitted! Thank you.</h4></center>'
+            message='Data submitted! Thank you.'
+            return render_template("message.html", message=message)
     return render_template('guestform.html')
 
 @app.route('/get_johari_data/')
@@ -80,7 +82,7 @@ def johari():
     subject_user = users.find_one({'name' : session['username']})
     they_see = [ ]
     if 'guests' not in subject_user.keys():
-            return f"""<h4 style="font-size:20px;">Heading</h4><h4><center>You are logged in as but there is nothing to visualize! 
+            message= f"""<h4 style="font-size:20px;">Heading</h4><h4><center>You are logged in as but there is nothing to visualize! 
             Share your uasername/key and have others fill out the form about you to get data. Share this message below.
             <br>
             <br>Please use link below and use the username/key provided to fill out a short survey about me. Thank you! 
@@ -89,6 +91,7 @@ def johari():
             <br>Key: {subject_user['share_key']}
             <br>
             <br>For more information, please visit https://self-awareness-app.herokuapp.com/</h4></center>"""
+            return render_template("message.html", message=message)
     else: 
         for i in range(len(subject_user["guests"])):
             for adj in subject_user["guests"][i]["guest_adj"]:
