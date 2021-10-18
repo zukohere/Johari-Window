@@ -32,7 +32,7 @@ def login():
             return render_template('joharidsplay.html')
     
     error='Invalid username/password combination.'
-    return render_template("error.html", error=error)
+    return render_template("message.html", error=error)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -62,7 +62,7 @@ def submit():
         datalist=request.form.getlist("JohariMongo")
         guest_name = request.form['guestname']
         if subject_user is None:
-            error = 'Invalid username/key combination.'
+            error = "Invalid username/key combination. Use your browser back button so you don't lose your data, and try again."
             return render_template("message.html", message=error)
         else:
             if 'guests' not in subject_user.keys():
