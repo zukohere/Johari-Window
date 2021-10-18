@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container">
+    <center><h1>Welcome to the Johari Window Generator</h1></center>
+    <center><h2>An app to help improve self-awareness within your community of friends, family, colleagues, teams, etc.</h2></center>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <form method=POST action="{{ url_for('login') }}">
@@ -24,5 +26,17 @@
             </div>
         </div>
     </div>
+    <br>
+    <center><h3>Instructions</h3></center>
+    <h4><strong>Step 1. </strong> Create a username/password and then choose a key to share with others so they can find you. Then you'll select adjectives from a list that YOU feel describe YOURSELF.</h4>
+    <h4><strong>Step 2. </strong> Share your username and shareable key with others so they can select adjectives from the same list that THEY feel describe YOU.</h4>
+    <h4><strong>Step 3. </strong> Login to your profile to see your Johari Window. The window will show the adjectives that:
+    <ul>
+        <li>You both said describe you.</li>
+        <li>Only they (and not you) chose describe you.</li>
+        <li>Only you (and no one else) chose to describe you.</li>
+        <li>Neither you nor others chose to describe you.</li>
+    </ul>
+    &emsp; The app will show you more about what you're putting out there for others to see.</h4>
 </div>
 {% endblock %}
