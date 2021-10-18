@@ -125,8 +125,8 @@ function renderQuad() {
         var num_obs = data.num_obs
         // create a linear scale to limit font size choices for the word cloud
         JohariQuad("Arena", arenaData, "green", num_obs, arenaData.length, "rgb(183, 198, 228)", "Arena (observed by self and by others)")
-        JohariQuad("Blindspot", blindspotData, "yellow", num_obs, blindspotData.length, "rgb(241, 204, 177)", "Blind Spot (observed by others, not self)")
-        JohariQuad("Facade", facadeData, "orange", num_obs, facadeData.length, "rgb(251, 230, 162)", "Facade (observed by self, not others)")
+        JohariQuad("Blindspot", blindspotData, "yellow", num_obs, blindspotData.length, "rgb(241, 204, 177)", "Blind Spot (observed by others only)")
+        JohariQuad("Facade", facadeData, "orange", num_obs, facadeData.length, "rgb(251, 230, 162)", "Facade (observed by self only)")
         JohariQuad("Unknown", unknownData, "red", num_obs, unknownData.length, "rgb(195, 195, 195)", "Unknown (not observed)")
     })
 }
