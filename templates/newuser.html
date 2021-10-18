@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Johari Window</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
+</head>
+
+<header>
+</header>
+</section>
+
+<body>
+    {{ message }}</h4></center>
+    <center><h1>You are logged in but there is nothing to visualize yet!</h1>
+    <br>
+    <h4>Copy and share this message below and have fill out the form about you to get data.</h4>
+    <br>
+    <br>
+    <h4>Please use link below and use the username/key provided to fill out a short survey about me. Thank you!
+    <br><a href="https://self-awareness-app.herokuapp.com/guestform">https://self-awareness-app.herokuapp.com/guestform</a>
+    <br>Use my username: {{ new_username }} 
+    <br>Use my key: {{ new_key }} 
+    <br>For more information, please visit https://self-awareness-app.herokuapp.com/</h4>
+
+
+
+</body>
+
+</html>
+{% endblock %}

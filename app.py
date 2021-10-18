@@ -49,23 +49,16 @@ def register():
             'user_adj': datalist,
             })
             session['username'] = request.form['username']
-            
+            subject_user=users.find_one({'name' : session['username']})
             if 'guests' not in subject_user.keys():
-                message= f"""<h4 style="font-size:20px;">Heading</h4><h4><center>You are logged in as but there is nothing to visualize! 
-                Share your uasername/key and have others fill out the form about you to get data. Share this message below.
-                <br>
-                <br>Please use link below and use the username/key provided to fill out a short survey about me. Thank you! 
-                <br><a href="https://self-awareness-app.herokuapp.com/guestform">https://self-awareness-app.herokuapp.com/guestform</a>
-                <br>Username: {session['username']}
-                <br>Key: {subject_user['share_key']}
-                <br>
-                <br>For more information, please visit https://self-awareness-app.herokuapp.com/</h4></center>"""
-                return render_template("message.html", message=message)
+                              
+                return render_template("newuser.html", new_username= session["username"], new_key= subject_user["share_key"])
 
             return redirect(url_for('index'))
         
         error= 'That username already exists!'
         return render_template("message.html", message=error)
+
     return render_template('register.html')
 
 @app.route('/guestform', methods=['POST', 'GET'])
@@ -117,6 +110,11 @@ def johari():
                 "Blindspot": Blindspot,
                 "Unknown": Unknown}
     return jsonify(visdata)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
