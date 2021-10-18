@@ -32,7 +32,7 @@ def login():
             return render_template('joharidsplay.html')
     
     error='Invalid username/password combination.'
-    return render_template("message.html", error=error)
+    return render_template("message.html", message=error)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -49,11 +49,25 @@ def register():
             'user_adj': datalist,
             })
             session['username'] = request.form['username']
+            
+            if 'guests' not in subject_user.keys():
+                message= f"""<h4 style="font-size:20px;">Heading</h4><h4><center>You are logged in as but there is nothing to visualize! 
+                Share your uasername/key and have others fill out the form about you to get data. Share this message below.
+                <br>
+                <br>Please use link below and use the username/key provided to fill out a short survey about me. Thank you! 
+                <br><a href="https://self-awareness-app.herokuapp.com/guestform">https://self-awareness-app.herokuapp.com/guestform</a>
+                <br>Username: {session['username']}
+                <br>Key: {subject_user['share_key']}
+                <br>
+                <br>For more information, please visit https://self-awareness-app.herokuapp.com/</h4></center>"""
+                return render_template("message.html", message=message)
+
             return redirect(url_for('index'))
         
         error= 'That username already exists!'
         return render_template("message.html", message=error)
     return render_template('register.html')
+
 @app.route('/guestform', methods=['POST', 'GET'])
 def submit():
     if request.method == 'POST':
@@ -81,39 +95,28 @@ def johari():
     users = db.users
     subject_user = users.find_one({'name' : session['username']})
     they_see = [ ]
-    if 'guests' not in subject_user.keys():
-            message= f"""<h4 style="font-size:20px;">Heading</h4><h4><center>You are logged in as but there is nothing to visualize! 
-            Share your uasername/key and have others fill out the form about you to get data. Share this message below.
-            <br>
-            <br>Please use link below and use the username/key provided to fill out a short survey about me. Thank you! 
-            <br><a href="https://self-awareness-app.herokuapp.com/guestform">https://self-awareness-app.herokuapp.com/guestform</a>
-            <br>Username: {session['username']}
-            <br>Key: {subject_user['share_key']}
-            <br>
-            <br>For more information, please visit https://self-awareness-app.herokuapp.com/</h4></center>"""
-            return render_template("message.html", message=message)
-    else: 
-        for i in range(len(subject_user["guests"])):
-            for adj in subject_user["guests"][i]["guest_adj"]:
-                they_see.append(adj)
     
-        you_see = subject_user['user_adj']
+    for i in range(len(subject_user["guests"])):
+        for adj in subject_user["guests"][i]["guest_adj"]:
+            they_see.append(adj)
 
-        Arena = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj in they_see]
-        Facade = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in you_see if adj not in they_see]
-        Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in they_see if adj not in you_see]
-        Unknown = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in full_list if adj not in you_see if adj not in they_see]
-        # Facade and unknown have different counts for every one that didn't see it.
+    you_see = subject_user['user_adj']
+
+    Arena = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj in they_see]
+    Facade = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in you_see if adj not in they_see]
+    Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in they_see if adj not in you_see]
+    Unknown = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in full_list if adj not in you_see if adj not in they_see]
+    # Facade and unknown have different counts for every one that didn't see it.
 
 
-        visdata = {"Username": username, 
-                    "Key": subject_user['share_key'],
-                    "num_obs": len(subject_user["guests"]),
-                    "Arena": Arena, 
-                    "Facade": Facade, 
-                    "Blindspot": Blindspot,
-                    "Unknown": Unknown}
-        return jsonify(visdata)
+    visdata = {"Username": username, 
+                "Key": subject_user['share_key'],
+                "num_obs": len(subject_user["guests"]),
+                "Arena": Arena, 
+                "Facade": Facade, 
+                "Blindspot": Blindspot,
+                "Unknown": Unknown}
+    return jsonify(visdata)
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
