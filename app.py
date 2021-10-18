@@ -31,7 +31,8 @@ def login():
             session['username'] = request.form['username']
             return render_template('joharidsplay.html')
     
-    return '<head><link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css"></head><body><center><h4>Invalid username/password combination</h4></center></body>'
+    error='Invalid username/password combination.'
+    return render_template("error.html", error=error)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
