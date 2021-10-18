@@ -14,7 +14,9 @@ db = mongo_client.db
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('joharidsplay.html')
+        users = db.users
+        subject_user=users.find_one({'name' : session['username']})
+        return render_template('joharidsplay.html',username= session["username"], key= subject_user["share_key"])
     return render_template("index.html")
     
 
@@ -29,7 +31,8 @@ def login():
         
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
             session['username'] = request.form['username']
-            return render_template('joharidsplay.html')
+            subject_user=users.find_one({'name' : session['username']})
+            return render_template('joharidsplay.html',username= session["username"], key= subject_user["share_key"])
     
     error='Invalid username/password combination.'
     return render_template("message.html", message=error)

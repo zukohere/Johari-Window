@@ -26,15 +26,16 @@
 
   <!-- Create the overall grid -->
   <div class="container" style="background-color: rgb(236, 247, 236);">
-
+    <center><h4>Logged in as: {{username}} with shareable key: {{key}}</h4>
+    <center><h4><a href="{{ url_for('logout') }}">Log Out</a></h4></center>
     <section class="row">
       <div class="col-md-6" style = "border-style: solid; background-color: rgb(183, 198, 228)">
-        <center><h4>Arena (observed by self and by others)</h4></center>
+        <!-- <center><h4>Arena (observed by self and by others)</h4></center> -->
         <div id="Arena"></div>
       </div>
       
       <div class="col-md-6" style = "border-style: solid; background-color: rgb(241, 204, 177)">
-        <center><h4>Blind Spot (observed only by others, not by self)</h4></center>
+        <!-- <center><h4>Blind Spot (observed only by others, not by self)</h4></center> -->
         <div id="Blindspot"></div>
       </div>
     </section>
@@ -43,12 +44,12 @@
     
     <section class="row">
       <div class="col-md-6" style = "border-style: solid; background-color: rgb(251, 230, 162)">
-        <center><h4>Facade (observed by self, not observed by others)</h2></center>
+        <!-- <center><h4>Facade (observed by self, not observed by others)</h2></center> -->
         <div id="Facade"></div>
       </div>
       <div class="border-right"></div>
       <div class="col-md-6" style = "border-style: solid; background-color: rgb(195, 195, 195)">
-        <center><h4>Unknown (not observed by self or others)</h4></center>
+        <!-- <center><h4>Unknown (not observed by self or others)</h4></center> -->
         <div id="Unknown"></div>
       </div>
     </section>
