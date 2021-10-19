@@ -90,8 +90,8 @@ def johari():
     username = session['username']
     users = db.users
     subject_user = users.find_one({'name' : session['username']})
-    they_see = [ ]
-    
+    they_see = []
+
     for i in range(len(subject_user["guests"])):
         for adj in subject_user["guests"][i]["guest_adj"]:
             they_see.append(adj)
@@ -113,6 +113,26 @@ def johari():
                 "Blindspot": Blindspot,
                 "Unknown": Unknown}
     return jsonify(visdata)
+
+@app.route("/guestremove", methods=['POST', 'GET'])
+def remove_obs():
+    username = session['username']
+    users = db.users
+    subject_user = users.find_one({'name' : session['username']})
+    they_see = []
+    allguests = []
+
+    for i in range(len(subject_user["guests"])):
+        allguests.append((i,subject_user["guests"][i]["name"],len(subject_user["guests"][i]["guest_adj"])))
+
+    if request.method == 'POST':
+        remove_list=[int(i) for i in request.form.getlist("removeList")]
+        trimmed_guest_list = [subject_user["guests"][i] for i in range(len(subject_user["guests"])) if i not in remove_list]
+        users.update({'name' : session['username']},{"$set": {"guests": trimmed_guest_list}})
+        return render_template("message.html", message="Removal complete. Log out and Log back in to continue.")
+
+    return render_template('guestremove.html',allGuests=allguests)
+
 
 @app.route('/logout')
 def logout():
