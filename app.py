@@ -4,6 +4,7 @@ import bcrypt
 from collections import Counter
 from Johari_full_list import full_list
 
+# set up flask app and MongoDB connections.
 app = Flask(__name__)
 app.secret_key = 'mysecret'
 app.config['MONGO_DBNAME'] = 'Johari'
@@ -13,6 +14,7 @@ mongo_client = PyMongo(app)
 db = mongo_client.db
 @app.route('/')
 def index():
+    # if user is logged in, bring up the Johari window display page. Otherwise, bring up the login page.
     if 'username' in session:
         users = db.users
         subject_user=users.find_one({'name' : session['username']})
@@ -22,16 +24,17 @@ def index():
 
 @app.route('/login', methods=['POST'])
 def login():
+    # check credentials to log the user in or return page with message about invalid credentials.
     users = db.users
     login_user = users.find_one({'name' : request.form['username']})
     
-
     if login_user:
-        # subject_user = users.find_one({'name' : session['username']})
-        
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
             session['username'] = request.form['username']
             subject_user=users.find_one({'name' : session['username']})
+            # if the user has no data to display from guest observers, let them know to share they're key. Otherwise, proceed to the window display.
+            if 'guests' not in subject_user.keys():
+                return render_template("newuser.html", new_username= session["username"], new_key= subject_user["share_key"]) 
             return render_template('joharidsplay.html',username= session["username"], key= subject_user["share_key"])
     
     error='Invalid username/password combination.'
@@ -39,6 +42,7 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    # For when new user clicks to create an account. Check if username is in database, if not, create document for the new user.
     if request.method == 'POST':
         users = db.users
         existing_user = users.find_one({'name' : request.form['username']})
@@ -66,6 +70,8 @@ def register():
 
 @app.route('/guestform', methods=['POST', 'GET'])
 def submit():
+    # For when guests select option to submit data about a user. Check if user/key combo is good (subject_user will be None).
+    # Obtain list JohariMongo from the form. and a  
     if request.method == 'POST':
         users = db.users
         subject_user = users.find_one({'name' : request.form['username'], 'share_key' : request.form['sharekey']})
