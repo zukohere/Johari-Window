@@ -5,7 +5,7 @@ function JohariQuad(tag, quadrant, themeColor, num_obs, num_adj, winColor, title
     // set the dimensions and margins of the graph
     var margin = { top: 40, right: 30, bottom: 40, left: 100 }
     width = 400 - margin.left - margin.right,
-    height = 550 - margin.top - margin.bottom;
+        height = 550 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
 
@@ -20,22 +20,6 @@ function JohariQuad(tag, quadrant, themeColor, num_obs, num_adj, winColor, title
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")")
         .attr("overflow", "visible")
-    // .attr("border",1);
-
-    // var borderPath = svg.append("rect")
-    // .attr("x", 0)
-    // .attr("y", 0)
-    // .attr("height", 500)
-    // .attr("width", 400)
-    // .style("stroke", "black")
-    // .style("fill", "none")
-    // .style("stroke-width", 1);
-    // Parse the Data
-    // d3.json('/get_johari_data/').then(function (data) {
-    //     const dataPromise = d3.json('/get_johari_data/');
-    //     console.log("Data Promise: ", dataPromise);
-
-    //     // console.log(data)
 
 
     // scale adjective font size labels
@@ -48,8 +32,10 @@ function JohariQuad(tag, quadrant, themeColor, num_obs, num_adj, winColor, title
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
         .attr("class", "h4")
+        .attr("id", tag+"Title")
         .text(title)
         ;
+
     //     // Add X axis
     var x = d3.scaleLinear()
         .domain([0, num_obs])
@@ -99,13 +85,14 @@ function JohariQuad(tag, quadrant, themeColor, num_obs, num_adj, winColor, title
         .style("fill", themeColor)
         .attr("stroke", "black")
 
-    d3.select("#" + tag)
-        .on('click', function () {
-            // Get the d3js SVG element and save using saveSvgAsPng.js
-            saveSvgAsPng(document.getElementById(tag).getElementsByTagName('svg')[0],
-                "plot.png", { scale: 2, backgroundColor: winColor });
-        }
-        )
+    // Add Save Image through title click
+    d3.select("#"+tag+"Title")
+            .on('click', function () {
+                // Get the d3js SVG element and save using saveSvgAsPng.js
+                saveSvgAsPng(document.getElementById(tag).getElementsByTagName('svg')[0],
+                    "plot.png", { scale: 2, backgroundColor: winColor })
+            })
+
 }
 
 function renderQuad() {
@@ -128,6 +115,11 @@ function renderQuad() {
         JohariQuad("Blindspot", blindspotData, "yellow", num_obs, blindspotData.length, "rgb(241, 204, 177)", "Blind Spot (observed by others only)")
         JohariQuad("Facade", facadeData, "orange", num_obs, facadeData.length, "rgb(251, 230, 162)", "Facade (observed by self only)")
         JohariQuad("Unknown", unknownData, "red", num_obs, unknownData.length, "rgb(195, 195, 195)", "Unknown (not observed)")
+
+        const panes = [["Arena", "rgb(183, 198, 228)"],["Blindspot", "rgb(241, 204, 177)"],
+        ["Facade", "rgb(251, 230, 162)"],["Unknown", "rgb(195, 195, 195)"]];
+
+        
     })
 }
 
