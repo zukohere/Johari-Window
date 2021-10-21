@@ -115,11 +115,7 @@ function renderQuad() {
         JohariQuad("Blindspot", blindspotData, "yellow", num_obs, blindspotData.length, "rgb(241, 204, 177)", "Blind Spot (observed by others only)")
         JohariQuad("Facade", facadeData, "orange", num_obs, facadeData.length, "rgb(251, 230, 162)", "Facade (observed by self only)")
         JohariQuad("Unknown", unknownData, "red", num_obs, unknownData.length, "rgb(195, 195, 195)", "Unknown (not observed)")
-
-        const panes = [["Arena", "rgb(183, 198, 228)"],["Blindspot", "rgb(241, 204, 177)"],
-        ["Facade", "rgb(251, 230, 162)"],["Unknown", "rgb(195, 195, 195)"]];
-
-        
+               
     })
 }
 
