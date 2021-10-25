@@ -105,7 +105,6 @@ function renderQuad() {
         //   console.log(data)
         // Sort 
         var arenaData = data.Arena.sort((a, b) => b.obsCount - a.obsCount)
-        console.log(data.Blindspot)
         var blindspotData = data.Blindspot.sort((a, b) => b.obsCount - a.obsCount)
         var facadeData = data.Facade.sort((a, b) => b.obsCount - a.obsCount)
         var unknownData = data.Unknown.sort((a, b) => b.obsCount - a.obsCount)

@@ -106,7 +106,7 @@ def johari():
 
     Arena = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in you_see if adj in they_see]
     Facade = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in you_see if adj not in they_see]
-    Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in they_see if adj not in you_see]
+    Blindspot = [{"adj": adj,"obsCount": Counter(they_see)[adj], "obsPercent": Counter(they_see)[adj]/len(subject_user["guests"])} for adj in list(set(they_see)) if adj not in you_see]
     Unknown = [{"adj": adj,"obsCount": len(subject_user["guests"]), "obsPercent": 1} for adj in full_list if adj not in you_see if adj not in they_see]
     # Facade and unknown have different counts for every one that didn't see it.
 
@@ -125,7 +125,7 @@ def remove_obs():
     username = session['username']
     users = db.users
     subject_user = users.find_one({'name' : session['username']})
-    they_see = []
+    they_see = [] # this list will have duplicate entries since mult guests may choose same adj (trimmed for blindspot)
     allguests = []
 
     for i in range(len(subject_user["guests"])):

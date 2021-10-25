@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container">
-    <center><h1>Welcome to the Johari Window Generator</h1></center>
-    <center><h2>An app to help improve self-awareness within your community of friends, family, colleagues, teams, etc.</h2></center>
+    <center>
+        <h1>Welcome to the Johari Window Generator</h1>
+    </center>
+    <center>
+        <h2>An app to help improve self-awareness within your community of friends, family, colleagues, teams, etc.</h2>
+    </center>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <form method=POST action="{{ url_for('login') }}">
@@ -22,21 +26,74 @@
             </div>
             <br>
             <div>
-                Were you given a key by an existing user?  <a href="{{ url_for('submit') }}">Submit data here</a>.
+                Were you given a key by an existing user? <a href="{{ url_for('submit') }}">Submit data here</a>.
             </div>
         </div>
     </div>
     <br>
-    <center><h3>Instructions</h3></center>
-    <h4><strong>Step 1. </strong> Create a username/password and then choose a key to share with others so they can find you. Then you'll select adjectives from a list that YOU feel describe YOURSELF.</h4>
-    <h4><strong>Step 2. </strong> Share your username and shareable key with others so they can select adjectives from the same list that THEY feel describe YOU.</h4>
-    <h4><strong>Step 3. </strong> Login to your profile to see your Johari Window. The window will show the adjectives that:
-    <ul>
-        <li>You both said describe you.</li>
-        <li>Only they (and not you) chose describe you.</li>
-        <li>Only you (and no one else) chose to describe you.</li>
-        <li>Neither you nor others chose to describe you.</li>
-    </ul>
-    &emsp; The app will show you more about what you're putting out there for others to see.</h4>
+    <center>
+        <h3>Instructions</h3>
+    </center>
+    <h4><strong>Step 1. </strong> Create a username/password and then choose a key to share with others so they can find
+        you. Then you'll select adjectives from a list that YOU feel describe YOURSELF.</h4>
+    <h4><strong>Step 2. </strong> Share your username and shareable key with others so they can select adjectives from
+        the same list that THEY feel describe YOU.</h4>
+    <h4><strong>Step 3. </strong> Login to your profile to see your Johari Window. The window will show the adjectives
+        that:
+        <ul>
+            <li>You both said describe you.</li>
+            <li>Only they (and not you) chose describe you.</li>
+            <li>Only you (and no one else) chose to describe you.</li>
+            <li>Neither you nor others chose to describe you.</li>
+        </ul>
+        &emsp; The app will show you more about what you're putting out there for others to see.
+        <br>
+        <br>
+        For more information on the Johari Window method, <a href="https://www.fearlessculture.design/blog-posts/the-johari-window">
+        click here</a>.
+    </h4>
+
+<center>
+    <h3>Sample Window</h3>
+</center>
+<h4><strong>Scenario:</strong>Jim works on a team with 6 people, but feels their reception of him is inconsistent. 
+    Though he connected with some of his teammembers right away, with others he has more trouble finding his "in" 
+    and feels he might be too shy to put himself out there or that these particular teammembers just plain don't like him.
+    Jim uses the Johari Window to build more self-awareness with in his team and find out what qualities he is 
+    really putting out there.  </h4>
+<h4><strong>Analysis:</strong>Jim's Arena indicates qualities both he and his teammates see in him. 
+    Jim and his team have strongly identified him as Able, Accepting, Calm, Helpful, Modest, and Proud,
+    and weakly identified him as Kind, Loving, Reflective and Warm.
+    Jim's Blind Spot indicates qualities his team sees that Jim does not see in himself.
+    His team has strongly identified him as Confident, Observant, Extroverted, Bold and Brave.
+    Jim's Facade indicates qualities he sees in himself but that his team does not see in him.
+    The team does not see him as Intervorted, Nervous, Quiet, Searching, Self-conscious, Shy, Silly, or Tense.
+    Jim's Unknown indicates qualities neither he nor his team sees in him. 
+    He and his team do not see him as Adaptable, Energetic, Self-Assertive, or Spontaneous.
+<h4><strong>Conclusion:</strong>Jim's Joahri Window tells him that he has an inflated sense of his own
+    introvert nature. They see more of his extroverted nature, but he could make more of an effort 
+    to adapt to his team environment by putting more energy into making his kind and warm nature known 
+    to more members of his team. Perhaps his modesty (which is high in his arena) is in his way. Perhaps gestures
+    don't need to be as planned as he thought, and he could be a little more spontaneous in how he connects
+    with his team. If Jim lets his guard down, asserts himself more as interested in connecting, he may be able to move past his introverted facade
+    and become a more supportive and more present member of his team.
+<section class="row">
+    <div class="col-md-6" style="border-style: solid; background-color: rgb(183, 198, 228)">
+        <img src="../static/img/arena.png" alt="Arena" width=565 style="display:block;">
+    </div>
+
+    <div class="col-md-6" style="border-style: solid; background-color: rgb(241, 204, 177)">
+        <img src="../static/img/blindspot.png" alt="BlindSpot"width=565 style="display:block;">
+    </div>
+</section>
+<section class="row">
+    <div class="col-md-6" style="border-style: solid; background-color: rgb(251, 230, 162)">
+        <img src="../static/img/facade.png" alt="Facade" width=565 style="display:block;">
+    </div>
+    <div class="border-right"></div>
+    <div class="col-md-6" style="border-style: solid; background-color: rgb(195, 195, 195)">
+        <img src="../static/img/unknown.png" alt="Unknown" width=565 style="display:block;">
+    </div>
+</section>
 </div>
 {% endblock %}
